@@ -1,0 +1,23 @@
+.ActiveQuiz {
+    padding: 20px;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.Question {
+    display: flex;
+    justify-content: center;
+}
+
+.ActiveQuiz div button {
+    background: transparent;
+    border: none;
+    font-size: 50px;
+    cursor: pointer;
+    color: #fff;
+    transform: rotateY(-180deg);
+}
