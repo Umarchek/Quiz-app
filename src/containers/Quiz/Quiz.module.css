@@ -4,16 +4,14 @@
     padding-top: 100px;
     flex-grow: 1;
     width: 100%;
-    background: #5f14a4;
-    background: linear-gradient(181deg, #5f14a4 40%, #8e28a8 80%);
-    background: -webkit-linear-gradient(181deg, #5f14a4 40%, #8e28a8 80%);
-    background: -moz-linear-gradient(181deg, #5f14a4 40%, #8e28a8 80%);
+    background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%);
 }
+
 .Quiz h1 {
-    color: white;
+    color: #fff;
     margin-left: 10px;
 }
 
 .QuizWrapper {
-    width: 800px;
+    width: 600px;
 }

@@ -1,68 +1,34 @@
 import React, { Component } from 'react'
 import classes from './Quiz.module.css'
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
-import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz.js'
-
-export class Quiz extends Component {
+import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
+class Quiz extends Component {
     state = {
-        results: {}, //{[id]}: success error
+        results: {},
         isFinished: false,
         activeQuestion: 0,
-        answerState: null, // { [id]: 'success' 'error' }
+        answerState: null,  //{[id]: 'success' 'error'}
         quiz: [
             {
-                question: 'What are two things you can never eat for breakfast?',
-                rightAnswerId: 1,
+                question: 'Is Tashkent big city in the world?',
+                rightAnswerId: 3,
                 id: 1,
                 answers: [
-                    { text: 'Lunch and Dinner', id: 1 },
-                    { text: 'Lunch', id: 2 },
-                    { text: 'Dinner', id: 3 },
-                    { text: 'I don`t know', id: 4 },
+                    { text: 'Yes', id: 1 },
+                    { text: 'I dont know', id: 2 },
+                    { text: 'No', id: 3 },
+                    { text: 'Some', id: 4 },
                 ]
             },
             {
-                question: 'What is always coming but never arrives?',
+                question: 'When found America?',
                 rightAnswerId: 2,
                 id: 2,
                 answers: [
-                    { text: 'Numbrix', id: 1 },
-                    { text: 'Tomorrow', id: 2 },
-                    { text: 'Arrive', id: 3 },
-                    { text: 'I don`t know', id: 4 },
-                ]
-            },
-            {
-                question: 'What gets wetter the more it dries?',
-                rightAnswerId: 3,
-                id: 3,
-                answers: [
-                    { text: 'Feeling Blue', id: 1 },
-                    { text: 'Week', id: 2 },
-                    { text: 'A towel', id: 3 },
-                    { text: 'I don`t know', id: 4 },
-                ]
-            },
-            {
-                question: 'What can be broken but never held?',
-                rightAnswerId: 1,
-                id: 4,
-                answers: [
-                    { text: 'A promise', id: 1 },
-                    { text: 'Massive', id: 2 },
-                    { text: 'Decide', id: 3 },
-                    { text: 'I don`t know', id: 4 },
-                ]
-            },
-            {
-                question: 'What word is spelled incorrectly in every single dictionary?',
-                rightAnswerId: 2,
-                id: 5,
-                answers: [
-                    { text: 'Finale', id: 1 },
-                    { text: 'Incorrectly', id: 2 },
-                    { text: 'Watch', id: 3 },
-                    { text: 'I don`t know', id: 4 },
+                    { text: '1990', id: 1 },
+                    { text: '1492', id: 2 },
+                    { text: '1400', id: 3 },
+                    { text: '1501', id: 4 },
                 ]
             }
         ]
@@ -72,32 +38,37 @@ export class Quiz extends Component {
         return this.state.activeQuestion + 1 === this.state.quiz.length
     }
 
-    onAnswerClickHandler = answerId => {
-        // console.log('Answer id: ', answerId);
+    retryHandler = () => {
+        this.setState({
+            activeQuestion: 0,
+            answerState: null,
+            isFinished: false,
+            results: {}
+        })
+    }
+
+    onAnswerClickHandler = (answerId) => {
         if (this.state.answerState) {
-            const key = Object.keys(this.state.answerState)[0]
+            const key = Object.keys(this.state.answerState)[0]  // object ichidaga index kalitni topib beradi
             if (this.state.answerState[key] === 'success') {
                 return
             }
         }
 
-
-
-        const question = this.state.quiz[this.state.activeQuestion]
+        const question = this.state.quiz[this.state.activeQuestion]  // object // 2 / 1 / 2
         const results = this.state.results
+
         if (question.rightAnswerId === answerId) {
             if (!results[question.id]) {
-                results[question.id] = "success"
+                results[question.id] = 'success' //{ 3: 'success', 2: 'success'}
             }
             this.setState({
                 answerState: { [answerId]: 'success' },
                 results
             })
 
-
             const timeout = window.setTimeout(() => {
                 if (this.isQuizFinished()) {
-                    // console.log("finished");
                     this.setState({
                         isFinished: true
                     })
@@ -109,40 +80,42 @@ export class Quiz extends Component {
                 }
                 window.clearTimeout(timeout)
             }, 1000)
-        } else {
-            results[question.id] = "error"
+        }
+        else {
+            // console.log(false); 
+            results[question.id] = 'error' // {4: 'error', 1: 'error'}
             this.setState({
                 answerState: { [answerId]: 'error' },
                 results
             })
         }
     }
-    retryHandler = () => {
-        this.setState({
-            results: {}, //{[id]}: success error
-            isFinished: false,
-            activeQuestion: 0,
-            answerState: null,
-        })
-    }
+
     render() {
         return (
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
-
-                    {this.state.isFinished
-                        ? <FinishedQuiz results={this.state.results} quiz={this.state.quiz} onRetry={this.retryHandler} />
-                        :
-                        <ActiveQuiz
-                            answers={this.state.quiz[this.state.activeQuestion].answers}
-                            question={this.state.quiz[this.state.activeQuestion].question}
-                            onAnswerClick={this.onAnswerClickHandler}
-                            quizLength={this.state.quiz.length}
-                            answerNumber={this.state.activeQuestion + 1}
-                            state={this.state.answerState}
-                        />
+                    <h1>Check all answers</h1>
+                    {
+                        this.state.isFinished
+                            ?
+                            <FinishedQuiz
+                                results={this.state.results}
+                                quiz={this.state.quiz}
+                                onRetry={this.retryHandler}
+                            />
+                            :
+                            <ActiveQuiz
+                                answers={this.state.quiz[this.state.activeQuestion].answers}
+                                question={this.state.quiz[this.state.activeQuestion].question}
+                                onAnswerClick={this.onAnswerClickHandler}
+                                quizLength={this.state.quiz.length}
+                                answerNumber={this.state.activeQuestion + 1}
+                                state={this.state.answerState}
+                            />
                     }
-                    
+
+
                 </div>
             </div>
         )
